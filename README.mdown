@@ -6,6 +6,23 @@ debugger.js — crossbrowser console.log()
 
 If you have problems like this, debugger.js exactly what are you looking for.
 
-For Opera debugger.js makes console.info acting like opera.postError()
 
-For IE < 8 and without debugger console.log == alert
+Browsers supporting console.log
+-------------------------------
+  * Firefox with [Firebug]
+  * Safari 3+
+  * Google Chrome
+  * Internet Explorer 8
+  * Internet Explorer < 8 with [Companion.js]
+
+Opera does not support it, but supports opera.postError(). Debugger.js simply makes console.log = opera.postError.
+
+Firebug without Firebug and IE < 8 without companion.js only have alert. Well, it's better then nothing. In this case console.log = alert.
+
+  [Firebug]: http://getfirebug.com/
+  [Companion.js]:http://www.my-debugbar.com/wiki/CompanionJS/HomePage
+
+
+alert()
+-------
+If you using alert please stop doing it. How many times you pressing OK? It's just silly. Use console.log instead.
