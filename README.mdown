@@ -25,4 +25,4 @@ Firebug without Firebug and IE < 8 without Companion.js only have alert. Well, i
 
 alert()
 -------
-If you using alert please stop doing it. How many times you pressing OK? It's just silly. Use console.log instead.
+If you are using alert please stop doing it. How many times you have clicked OK? It's just silly. Use console.log instead.
