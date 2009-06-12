@@ -1,0 +1,11 @@
+debugger.js — crossbrowser console.log()
+----------------------------------------
+
+    >>> console.log(document.body.className) 
+    Undefined variable: console
+
+If you have problems like this, debugger.js exactly what are you looking for.
+
+For Opera debugger.js makes console.info acting like opera.postError()
+
+For IE < 8 and without debugger console.log == alert
