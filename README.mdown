@@ -1,13 +1,13 @@
-debugger.js — crossbrowser console.log()
+console.js — crossbrowser Firebug console API
 ----------------------------------------
 
     >>> console.log(document.body.className) 
     Undefined variable: console
 
-If you have problems like this, debugger.js exactly what are you looking for.
+If you have problems like this, console.js exactly what are you looking for.
 
 
-Browsers supporting console.log
+Browsers supporting console API
 -------------------------------
   * Firefox with [Firebug][]
   * Safari 3+
@@ -15,7 +15,7 @@ Browsers supporting console.log
   * Internet Explorer 8
   * Internet Explorer < 8 with [Companion.js][]
 
-Opera does not support it, but supports opera.postError(). Debugger.js simply makes console.log = opera.postError.
+Opera support opera.postError() instead of console. console.js simply makes console.log = opera.postError.
 
 Firebug without Firebug and IE < 8 without Companion.js only have alert. Well, it's better then nothing. In this case console.log = alert.
 
