@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>console.log()</title>
+<script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+
+  console.group("basic arrays and objects");
+    console.log({x:2, y:8, z:[4,3]});
+    console.log([]);
+    console.log({x:2, y:8, z:[4,3]});
+  console.groupEnd();
+
+  console.group("elements");
+    console.log(window);
+    console.log(document.documentElement);
+    console.log(document.head);
+    console.log(document.body);
+    console.log(document.createElement('div'));
+  console.groupEnd();
+
+  console.group(" console.dimensions_limit ");
+    console.dimensions_limit = 5;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.dimensions_limit = 4;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.dimensions_limit = 3;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.dimensions_limit = 2;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.dimensions_limit = 1;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.dimensions_limit = 0;
+    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+  console.groupEnd();
+
+  console.group("Gotchas");
+    console.dimensions_limit = 1;
+    console.log([true, false, '', undefined, null, [], {}, / /]);
+    console.dimensions_limit = 2;
+    console.log([true, false, '', undefined, null, [], {}, / /]);
+  console.groupEnd();
+  
+};
+</script>
+</head>
+<body>See source code and error console</body></html>

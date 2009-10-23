@@ -23,18 +23,19 @@ if (typeof console === 'undefined') {
     var post = window.opera && opera.postError || alert;
 
     /**
-     * console.log('The answer:', 42)
-     * @param Objects
+     * Limit of objects dimensions
+     * console.dimensions_limit = 0
+     * console.log([42]) ==> [?]
+     * console.dimensions_limit = 1
+     * console.log([42]) ==> [42] 
      */
-    console.log = console.info = console.warn = console.error = console.debug = function log (){
-      post( Array.prototype.join.call( arguments, "\n" ) );
-    };
-
+    console.dimensions_limit = 1;
 
     /**
-     * console.dir({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
+     * console.log({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
+     * @param Objects
      */
-    console.dir = function dir () {
+    console.log = console.info = console.warn = console.error = console.debug = console.dir = function log () {
 
       /**
        * source_of({x:2, y:8}) === "{'x':2, 'y':8}"
@@ -45,7 +46,7 @@ if (typeof console === 'undefined') {
       var source_of = function source_of (arg, limit) {
 
         if (typeof limit == 'undefined') {
-          var limit = console.dir.limit;
+          var limit = console.dimensions_limit;
         }
 
         var result = '';
@@ -81,9 +82,6 @@ if (typeof console === 'undefined') {
       }
 
     };
-
-    // Limit of object dimensions
-    console.dir.limit = 1;
 
 
     /**
