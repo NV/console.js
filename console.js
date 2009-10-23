@@ -37,47 +37,42 @@ if (typeof console === 'undefined') {
     console.dir = function dir () {
 
       /**
-       * source_of([1, {a:2}]) === '[1, {"a": 2}]'
+       * source_of({x:2, y:8}) === "{'x':2, 'y':8}"
+       * @param {Object} arg
+       * @param {Number} limit dimension of objects
        * @return {String} string representation of input
        */
-      var source_of = function source_of () {
+      var source_of = function source_of (arg, limit) {
 
-        // Huge objects such as document.body blow out source_of function. This is dirty fix.
-        if (!arguments.callee.calls) {
-          arguments.callee.calls = 1;
-        } else if (arguments.callee.calls > 5) {
-          return ' ... ';
-        } else {
-          arguments.callee.calls++;
+        if (typeof limit == 'undefined') {
+          var limit = console.dir.limit;
         }
 
         var result = '';
-        for (var i = 0; i < arguments.length; i++) {
-          if (arguments[i] && typeof arguments[i].length === 'number' && typeof arguments[i].splice === 'function') {
-            result += '[';
-            var arr_list = [];
-            for (var j = 0; j < arguments[i].length; j++) {
-              arr_list.push( source_of(arguments[i][j]) );
-            }
-            result += arr_list.join(', ') +']';
-          } else if (typeof arguments[i] == 'object') {
-            result += '{ ';
-            var arr_obj = [];
-            for (var key in arguments[i]) {
-              if (arguments[i][key] == arguments[i]) {
-                // Avoid recursive links. For example: window.self == window
-                arr_obj.push( key +': __recursive_link__' );
-              } else {
-                arr_obj.push( key +': '+ source_of(arguments[i][key]) );
-              }
-            }
-            result += arr_obj.join(', ') +' }';
-          } else if (typeof arguments[i] == 'string') {
-            return "'"+ arguments[i] +"'";
-          } else {
-            return arguments[i];
+
+        // Is array?
+        if (arg && typeof arg.length === 'number' && typeof arg.splice === 'function') {
+          if (!limit) return '[?]';
+          result += '[';
+          var arr_list = [];
+          for (var j = 0; j < arg.length; j++) {
+            arr_list.push( source_of(arg[j], limit-1) );
           }
+          result += arr_list.join(', ') +']';
+        } else if (typeof arg == 'object') {
+          if (!limit) return '{?}';
+          result += '{ ';
+          var arr_obj = [];
+          for (var key in arg) {
+            arr_obj.push( "'"+ key +"': "+ source_of(arg[key], limit-1) );
+          }
+          result += arr_obj.join(', ') +' }';
+        } else if (typeof arg == 'string') {
+          return "'"+ arg +"'";
+        } else {
+          return arg;
         }
+
         return result;
       };
 
@@ -86,6 +81,9 @@ if (typeof console === 'undefined') {
       }
 
     };
+
+    // Limit of object dimensions
+    console.dir.limit = 1;
 
 
     /**
