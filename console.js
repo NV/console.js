@@ -36,8 +36,21 @@ if (typeof console === 'undefined') {
 
       var result = '';
 
-      // Is array?
-      if (arg && typeof arg.length === 'number' && typeof arg.splice === 'function') {
+
+      if (arg && arg instanceof Element && arg.nodeType == 1) {
+        // Is element?
+        result = '<'+ arg.tagName;
+        for (var i=0; i<arg.attributes.length; i++) {
+          result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
+        }
+        if (arg.childElementCount > 0) {
+          result += '>' + (arg.textContent || arg.text);
+          result += '</'+arg.tagName+'>';
+        } else {
+          result += '/>';
+        }
+      } else if (arg && typeof arg.length === 'number' && typeof arg.splice === 'function') {
+        // Is array?
         if (!limit) return '[?]';
         result += '[';
         var arr_list = [];
