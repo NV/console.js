@@ -36,35 +36,36 @@ if (typeof console === 'undefined') {
 
       var result = '';
 
-
-      if (arg && arg instanceof Element && arg.nodeType == 1) {
+      if (arg === null) {
+        return 'null';
+      } else if (arg === undefined) {
+        return 'undefined';
+      } else  if (arg && arg instanceof Element && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
         for (var i=0; i<arg.attributes.length; i++) {
           result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
         }
-        if (arg.childElementCount > 0) {
-          result += '>' + (arg.textContent || arg.text) + '</'+arg.tagName+'>';
-        } else {
-          result += '/>';
+        if (arg.childElementCount == 0) {
+          result += '/';
         }
+        result += '>';
       } else if (Object.prototype.toString.call(arg) === '[object Array]') {
         // Is array?
         if (!limit) return '[?]';
-        result += '[';
+        result = '[';
         var arr_list = [];
-        for (var j = 0; j < arg.length; j++) {
-          arr_list.push( source_of(arg[j], limit-1) );
+        for (var i = 0; i < arg.length; i++) {
+          arr_list[i] = source_of(arg[i], limit-1);
         }
         result += arr_list.join(', ') +']';
-      } else if (Object.prototype.toString.call(arg) === '[object String]') {
-        // Is string?
+      } else if (Object.prototype.toString.call(arg) === '[object String]' || arg instanceof Date) {
         result = "'"+ arg +"'";
       } else if (arg instanceof RegExp) {
         result = "/"+ arg.source +"/";
       } else if (typeof arg == 'object') {
         if (!limit) return '{?}';
-        result += '{ ';
+        result = '{ ';
         var arr_obj = [];
         for (var key in arg) {
           arr_obj.push( "'"+ key +"': "+ source_of(arg[key], limit-1) );

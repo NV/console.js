@@ -10,9 +10,10 @@ window.onload = function(){
     console.log({x:2, y:8, z:[4,3]});
     console.log([]);
     console.log(['Me', 'and'], new Array('my brother','Array'));
-    console.log(['Me and'], new String('my brother String'));
+    console.log('Me and', new String('my brother String'));
     console.log(/Me and/, new RegExp('my brother RegExp'));
     console.log(1, new Number(2));
+    console.log(new Date);
   console.groupEnd();
 
   console.group("elements");
