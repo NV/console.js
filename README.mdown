@@ -1,4 +1,6 @@
-![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)
+[![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)](http://wiki.github.com/NV/console.js/comparison-of-consoles)
+
+[Comparison of consoles](http://wiki.github.com/NV/console.js/comparison-of-consoles)
 
 Console.js — crossbrowser Firebug console API
 =============================================
