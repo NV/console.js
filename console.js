@@ -48,7 +48,7 @@ if (typeof console === 'undefined') {
         } else {
           result += '/>';
         }
-      } else if (arg && typeof arg.length === 'number' && typeof arg.splice === 'function') {
+      } else if (Object.prototype.toString.call(arg) === '[object Array]') {
         // Is array?
         if (!limit) return '[?]';
         result += '[';
@@ -57,6 +57,11 @@ if (typeof console === 'undefined') {
           arr_list.push( source_of(arg[j], limit-1) );
         }
         result += arr_list.join(', ') +']';
+      } else if (Object.prototype.toString.call(arg) === '[object String]') {
+        // Is string?
+        result = "'"+ arg +"'";
+      } else if (arg instanceof RegExp) {
+        result = "/"+ arg.source +"/";
       } else if (typeof arg == 'object') {
         if (!limit) return '{?}';
         result += '{ ';
@@ -65,8 +70,6 @@ if (typeof console === 'undefined') {
           arr_obj.push( "'"+ key +"': "+ source_of(arg[key], limit-1) );
         }
         result += arr_obj.join(', ') +' }';
-      } else if (typeof arg == 'string') {
-        return "'"+ arg +"'";
       } else {
         return arg;
       }
