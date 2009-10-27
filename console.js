@@ -44,8 +44,7 @@ if (typeof console === 'undefined') {
           result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
         }
         if (arg.childElementCount > 0) {
-          result += '>' + (arg.textContent || arg.text);
-          result += '</'+arg.tagName+'>';
+          result += '>' + (arg.textContent || arg.text) + '</'+arg.tagName+'>';
         } else {
           result += '/>';
         }
