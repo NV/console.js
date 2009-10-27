@@ -1,13 +1,17 @@
+console.js — crossbrowser Firebug console API
+---------------------------------------------
+
 ![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)
 
-console.js — crossbrowser Firebug console API
-----------------------------------------
+How to use
+----------
 
-    >>> console.log(document.body.className) 
-    Undefined variable: console
-
-If you have problems like this, console.js exactly what are you looking for.
-
+    >>> console.log('Hello World!')
+    'Hello World!'
+    >>> point = {x:3, y:5}; console.log(point)
+    { 'x': 3, 'y': 5 }
+    >>> console.log(document.body)
+    <BODY class="timeline" id="home">
 
 Browsers supporting console API
 -------------------------------
