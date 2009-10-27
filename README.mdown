@@ -1,5 +1,5 @@
 console.js — crossbrowser Firebug console API
----------------------------------------------
+=============================================
 
 ![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)
 
