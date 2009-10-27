@@ -40,13 +40,13 @@ if (typeof console === 'undefined') {
         return 'null';
       } else if (arg === undefined) {
         return 'undefined';
-      } else  if (arg && arg instanceof Element && arg.nodeType == 1) {
+      } else if (arg && arg instanceof Element && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
         for (var i=0; i<arg.attributes.length; i++) {
           result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
         }
-        if (arg.childElementCount == 0) {
+        if (arg.childElementCount === 0) {
           result += '/';
         }
         result += '>';
