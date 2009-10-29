@@ -59,7 +59,7 @@ if (typeof console === 'undefined') {
           arr_list[i] = source_of(arg[i], limit-1);
         }
         result += arr_list.join(', ') +']';
-      } else if (Object.prototype.toString.call(arg) === '[object String]' || arg instanceof Date) {
+      } else if (Object.prototype.toString.call(arg) === '[object String]') {
         result = "'"+ arg +"'";
       } else if (arg instanceof RegExp) {
         result = "/"+ arg.source +"/";
