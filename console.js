@@ -55,7 +55,7 @@ if (typeof console === 'undefined') {
         if (!limit) return '[?]';
         result = '[';
         var arr_list = [];
-        for (var i = 0; i < arg.length; i++) {
+        for (var i=0; i<arg.length; i++) {
           arr_list[i] = source_of(arg[i], limit-1);
         }
         result += arr_list.join(', ') +']';
