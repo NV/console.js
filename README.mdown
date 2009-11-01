@@ -8,29 +8,17 @@ Console.js — crossbrowser Firebug console API
 How to use
 ----------
 
-    >>> console.log('Hello World!')
-    'Hello World!'
-    >>> point = {x:3, y:5}; console.log(point)
+    >>> console.log({x:3, y:5})
     { 'x': 3, 'y': 5 }
     >>> console.log(document.body)
     <BODY class="timeline" id="home">
 
-Browsers supporting console API
--------------------------------
-  * Firefox with [Firebug][]
-  * Safari 3+
-  * Google Chrome
-  * Internet Explorer 8
-  * Internet Explorer < 8 with [Companion.js][]
+Compare with opera.postError
+----------------------------
 
-Opera support opera.postError() instead of console. console.js simply makes console.log = opera.postError.
+    >>> opera.postError({x:3, y:5})
+    [object Object]
+    >>> opera.postError(document.body)
+    [object HTMLBodyElement]
 
-Firebug without Firebug and IE < 8 without Companion.js only have alert. Well, it's better then nothing. In this case console.log = alert.
-
-  [Firebug]: http://getfirebug.com/
-  [Companion.js]: http://www.my-debugbar.com/wiki/CompanionJS/HomePage
-
-
-alert()
--------
-If you are using alert please stop doing it. How many times you have clicked OK? It's just silly. Use console.log instead.
+Pretty dump.
