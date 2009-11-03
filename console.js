@@ -30,7 +30,7 @@ if (typeof console === 'undefined') {
      */
     var source_of = function source_of (arg, limit) {
 
-      if (typeof limit == 'undefined') {
+      if (limit === undefined) {
         var limit = console.dimensions_limit;
       }
 
@@ -63,7 +63,7 @@ if (typeof console === 'undefined') {
         result = "'"+ arg +"'";
       } else if (arg instanceof RegExp) {
         result = "/"+ arg.source +"/";
-      } else if (typeof arg == 'object') {
+      } else if (typeof arg === 'object') {
         if (!limit) return '{?}';
         result = '{ ';
         var arr_obj = [];
