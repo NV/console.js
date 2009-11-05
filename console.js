@@ -38,7 +38,7 @@ if (typeof console === 'undefined') {
 
       if (arg === null) {
         return 'null';
-      } else if (arg === undefined) {
+      } else if (typeof arg === 'undefined') {
         return 'undefined';
       } else if (arg && arg instanceof Element && arg.nodeType == 1) {
         // Is element?
