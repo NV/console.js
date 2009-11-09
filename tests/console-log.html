@@ -27,18 +27,16 @@ window.onload = function(){
   console.groupEnd();
 
   console.group(" console.dimensions_limit ");
-    console.dimensions_limit = 5;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
     console.dimensions_limit = 4;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
     console.dimensions_limit = 3;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
     console.dimensions_limit = 2;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
     console.dimensions_limit = 1;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
     console.dimensions_limit = 0;
-    console.log(['hello', ['cruel', ['world', ['and', ['goodbay']]]]]);
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
   console.groupEnd();
 
   console.group("Gotchas");

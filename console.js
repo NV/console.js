@@ -9,10 +9,10 @@ if (typeof console === 'undefined') {
 
   /**
    * Limit of objects dimensions
-   * console.dimensions_limit = 0
-   * console.log([42]) ==> [?]
    * console.dimensions_limit = 1
-   * console.log([42]) ==> [42]
+   * console.log({a:{b:1}}) ==> { 'a': {?} }
+   * console.dimensions_limit = 2
+   * console.log({a:{b:1}}) ==> { 'a': { 'b': 1 } }
    */
   console.dimensions_limit = 1;
 
@@ -52,11 +52,10 @@ if (typeof console === 'undefined') {
         result += '>';
       } else if (Object.prototype.toString.call(arg) === '[object Array]') {
         // Is array?
-        if (!limit) return '[?]';
         result = '[';
         var arr_list = [];
         for (var i=0; i<arg.length; i++) {
-          arr_list[i] = source_of(arg[i], limit-1);
+          arr_list[i] = source_of(arg[i], limit);
         }
         result += arr_list.join(', ') +']';
       } else if (Object.prototype.toString.call(arg) === '[object String]') {
