@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>console.time()</title>
+<script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript">
+function between (begin, end) {
+  var left = this.substring(this.indexOf(begin) + begin.length);
+  return left.substring(0, left.indexOf(end));
+}
+
+console.time('between');
+
+for (var i=0; i<10000; i++) {
+  between.call('#URL\n\
+	ID=396\n\
+	NAME=JS/UIX - Terminal\n\
+	URL=http://masswerk.at/jsuix/\n\
+	UNIQUEID=8BDFD6508BD848FABB35F235B2EFD5B6', 'NAME=', '\n');
+}
+
+console.timeEnd('between');
+</script>
+</head>
+<body>
+</body></html>

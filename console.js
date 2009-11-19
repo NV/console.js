@@ -150,17 +150,23 @@ if (typeof console === 'undefined') {
   };
 
 
+  console._timers = {};
+
   /**
-   * @param {String} name
+   * @param {String} name such as "my damn slow parser"
    */
   console.time = function time (name) {
-    return 'Not implemented';
+    var start = (new Date).getTime();
+    console._timers[name] = {'start': start};
   };
+
   /**
-   * @param {String} name
+   * @param {String} name such as "my damn slow parser"
    */
   console.timeEnd = function timeEnd (name) {
-    return 'Not implemented';
+    var end = (new Date).getTime();
+    console.info(name +': '+ (end - console._timers[name].start) +'ms');
+    console._timers[name].end = end;
   };
 
 
