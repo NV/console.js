@@ -41,7 +41,7 @@ if (typeof console === 'undefined') {
         return 'null';
       } else if (typeof arg === 'undefined') {
         return 'undefined';
-      } else if (arg && arg instanceof Element && arg.nodeType == 1) {
+      } else if (arg && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
         for (var i=0; i<arg.attributes.length; i++) {
@@ -86,7 +86,7 @@ if (typeof console === 'undefined') {
 
   }
 
-
+  
   var browser_suck_at_logging = /*@cc_on 1 || @*/ window.opera;
 
   var log_methods = ['log', 'info', 'warn', 'error', 'debug', 'dir', 'dirxml'];
