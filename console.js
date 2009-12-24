@@ -129,7 +129,7 @@ if (typeof console === 'undefined') {
    * @param {String} name optional
    */
   console.group = console.group || function group (name) {
-    post('\n-------------------- '+ name +' --------------------');
+    post('\n-------- '+ name +' --------');
   };
 
   console.groupCollapsed = console.groupCollapsed = console.group;
