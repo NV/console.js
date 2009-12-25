@@ -6,6 +6,9 @@ Firebug and Web Inspector both has console API support. But Opera and IE < 8 doe
 Console.js — crossbrowser Firebug console API
 =============================================
 
+[Console.js benefits](http://wiki.github.com/NV/console.js/)
+---------------------
+
 How to use
 ----------
 
