@@ -1,5 +1,7 @@
 ![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)
 
+Different browsers, same API.
+
 Firebug and Web Inspector both has console API support. But Opera and IE < 8 doesn't. Console.js fix it.
 
 
@@ -16,16 +18,6 @@ How to use
     { 'x': 3, 'y': 5 }
     >>> console.log(document.body)
     <BODY class="timeline" id="home">
-
-Compare with opera.postError
-----------------------------
-
-    >>> opera.postError({x:3, y:5})
-    [object Object]
-    >>> opera.postError(document.body)
-    [object HTMLBodyElement]
-
-Pretty dump.
 
 [Comparison of consoles](http://wiki.github.com/NV/console.js/comparison-of-consoles)
 ----------------------
