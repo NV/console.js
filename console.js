@@ -141,7 +141,7 @@ if (typeof console === 'undefined') {
     post('\n-------- '+ name +' --------');
   };
 
-  console.groupCollapsed = console.groupCollapsed = console.group;
+  console.groupCollapsed = console.groupCollapsed || console.group;
 
   /**
    * Print 3 line breaks
