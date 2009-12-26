@@ -109,8 +109,12 @@ if (typeof console === 'undefined') {
       i.dont.exist++;
     } catch(e) {
       var stack = e.stack || e.stacktrace;
-      stack = stack.split('\n').slice(2).join('\n');
-      post(stack);
+      if (stack) {
+        try {
+          stack = stack.split('\n').slice(2).join('\n');
+        } catch (err) {}
+        post(stack);
+      }
     }
   };
 
