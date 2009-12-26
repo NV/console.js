@@ -156,13 +156,13 @@ if (typeof console === 'undefined') {
    */
   console.count = console.count || function count (title) {
     var title = title || '';
-    arguments.callee.counters = arguments.callee.counters || {};
-    if (arguments.callee.counters[title]) {
-      arguments.callee.counters[title]++;
+    count.counters = count.counters || {};
+    if (count.counters[title]) {
+      count.counters[title]++;
     } else {
-      arguments.callee.counters[title] = 1;
+      count.counters[title] = 1;
     }
-    post(title +' '+ arguments.callee.counters[title]);
+    post(title +' '+ count.counters[title]);
   };
 
 
