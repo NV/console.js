@@ -7,7 +7,12 @@ if (typeof console === 'undefined') {
 
 (function(){
   
-  var post = console.log || window.opera && opera.postError || alert;
+  var post = console.log || window.opera && opera.postError || function dump (message) {
+    if (typeof console.history === 'undefined') {
+      console.history = [];
+    }
+    console.history.push(message);
+  };
 
   /**
    * Limit of objects dimensions
