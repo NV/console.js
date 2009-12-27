@@ -7,11 +7,11 @@ if (typeof console === 'undefined') {
 
 (function(){
   
-  var post = console.log || window.opera && opera.postError || function dump (message) {
+  console._output = console.log || window.opera && opera.postError || function dump (message) {
     if (typeof console.history === 'undefined') {
       console.history = [];
     }
-    console.history.push(message);
+    return console.history.push(message);
   };
 
   /**
@@ -26,7 +26,7 @@ if (typeof console === 'undefined') {
   /**
    * source_of({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
    */
-  function source_of () {
+  console._source_of = function source_of () {
 
     /**
      * source_of_one_arg({x:2, y:8}) === "{'x':2, 'y':8}"
@@ -89,7 +89,7 @@ if (typeof console === 'undefined') {
     }
     return result.join(', ');
 
-  }
+  };
 
   
   var browser_suck_at_logging = /*@cc_on 1 || @*/ window.opera;
@@ -100,7 +100,7 @@ if (typeof console === 'undefined') {
     var _log = console[log_methods[i]];
     if (browser_suck_at_logging || !console[log_methods[i]]) {
       console[log_methods[i]] = function () {
-        (_log || post)( source_of.apply(this, arguments) );
+        return (_log || console._output)( console._source_of.apply(this, arguments) );
       };
     }
   }
@@ -118,7 +118,7 @@ if (typeof console === 'undefined') {
         try {
           stack = stack.split('\n').slice(2).join('\n');
         } catch (err) {}
-        post(stack);
+        console._output(stack);
       }
     }
   };
@@ -130,7 +130,7 @@ if (typeof console === 'undefined') {
    * @param {String} message optional
    */
   console.assert = console.assert || function assert (is_ok, message) {
-    if (!is_ok) post( 'ASSERT FAIL: '+ message );
+    if (!is_ok) console._output( 'ASSERT FAIL: '+ message );
   };
 
 
@@ -138,7 +138,7 @@ if (typeof console === 'undefined') {
    * @param {String} name optional
    */
   console.group = console.group || function group (name) {
-    post('\n-------- '+ name +' --------');
+    console._output('\n-------- '+ name +' --------');
   };
 
   console.groupCollapsed = console.groupCollapsed || console.group;
@@ -147,7 +147,7 @@ if (typeof console === 'undefined') {
    * Print 3 line breaks
    */
   console.groupEnd = console.groupEnd || function groupEnd () {
-    post('\n\n\n');
+    console._output('\n\n\n');
   };
 
 
@@ -162,7 +162,7 @@ if (typeof console === 'undefined') {
     } else {
       count.counters[title] = 1;
     }
-    post(title +' '+ count.counters[title]);
+    console._output(title +' '+ count.counters[title]);
   };
 
 
