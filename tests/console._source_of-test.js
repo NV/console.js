@@ -52,7 +52,7 @@ test('Objects', function(){
   equals(console._source_of({down: {to: {rabbit: 'hole'}}}), "{ 'down': { 'to': { 'rabbit': 'hole' } } }");
   console.dimensions_limit = 1;
   ok(console._source_of(document).indexOf('{') === 0, 'Looks like object');
-  ok(console._source_of(window).indexOf('{') === 0);
+  ok(console._source_of(window).indexOf('{') === 0, 'Looks like object');
 });
 
 test('Functions', function(){

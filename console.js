@@ -69,7 +69,9 @@ if (typeof console === 'undefined') {
         result = '{ ';
         var arr_obj = [];
         for (var key in arg) {
-          arr_obj.push( "'"+ key +"': "+ source_of_one_arg(arg[key], limit-1) );
+          try {
+            arr_obj.push( "'"+ key +"': "+ source_of_one_arg(arg[key], limit-1) );
+          } catch (e) {}
         }
         result += arr_obj.join(', ') +' }';
       } else {
