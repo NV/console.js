@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>console.group()</title>
+<script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript">
+console.group('group');
+  console.log('Bla-blah');
+  console.log('Yada-yada');
+console.groupEnd('group');
+
+console.groupCollapsed('groupCollapsed');
+  console.log('Bla-blah');
+  console.log('Yada-yada');
+console.groupEnd('groupCollapsed');
+
+console.group('Parent group');
+  console.log('Master');
+  console.group('Child group');
+    console.log('Slave');
+  console.groupEnd('Child group');
+console.groupEnd('Parent group');
+</script>
+</head>
+<body></body></html>

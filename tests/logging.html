@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>logging</title>
+<script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+
+  var methods = ['log', 'info', 'warn', 'error', 'debug', 'dir', 'dirxml'];
+  for (var i=0; i<methods.length; i++) {
+    console[methods[i]]('console.' + methods[i] + ' OK');
+  }
+
+};
+</script>
+</head>
+<body>
+  See <span>source</span> code and error console
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>console.log()</title>
+<script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+
+  console.group("basic arrays and objects");
+    console.log({x:2, y:8, z:[4,3]});
+    console.log([]);
+    console.log(['Me', 'and'], new Array('my brother','Array'));
+    console.log('Me and', new String('my brother String'));
+    console.log(/Me and/, new RegExp('my brother RegExp'));
+    console.log(1, new Number(2));
+    console.log(new Date);
+  console.groupEnd();
+
+  console.group("elements");
+    console.log(window);
+    console.log(document.documentElement);
+    console.log(document.getElementsByTagName('head')[0]);
+    console.log(document.body);
+    console.log(document.createElement('div'));
+    console.log(document.getElementById('example'));
+    console.log(document.getElementById('self_closed'));
+  console.groupEnd();
+
+  console.group(" console.dimensions_limit ");
+    console.dimensions_limit = 4;
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
+    console.dimensions_limit = 3;
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
+    console.dimensions_limit = 2;
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
+    console.dimensions_limit = 1;
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
+    console.dimensions_limit = 0;
+    console.log({a:'hello', a2:{b:'cruel', b2: {c:'world', c2:{d:'and', d2:'goodbay'}}}});
+  console.groupEnd();
+
+  console.group("Gotchas");
+    console.dimensions_limit = 1;
+    console.log([true, false, '', undefined, null, [], {}, / /]);
+    console.dimensions_limit = 2;
+    console.log([true, false, '', undefined, null, [], {}, / /]);
+  console.groupEnd();
+  
+};
+</script>
+</head>
+<body>
+  <div class="test case" id="example">See <span>source</span> code and error console</div>
+  <hr id="self_closed" />
+</body></html>
