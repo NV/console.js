@@ -8,9 +8,7 @@ if (typeof console === 'undefined') {
 (function(){
   
   console._output = console.log || window.opera && opera.postError || function dump (message) {
-    if (typeof console.history === 'undefined') {
-      console.history = [];
-    }
+    console.history = console.history || [];
     return console.history.push(message);
   };
 
@@ -35,10 +33,6 @@ if (typeof console === 'undefined') {
      * @return {String} string representation of input
      */
     function source_of_one_arg (arg, limit) {
-
-      if (limit === undefined) {
-        var limit = console.dimensions_limit;
-      }
 
       var result = '';
 
@@ -87,7 +81,7 @@ if (typeof console === 'undefined') {
 
     var result = [];
     for (var i=0; i<arguments.length; i++) {
-      result.push( source_of_one_arg(arguments[i]) );
+      result.push( source_of_one_arg(arguments[i], console.dimensions_limit) );
     }
     return result.join(', ');
 
