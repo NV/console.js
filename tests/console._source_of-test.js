@@ -27,6 +27,7 @@ test('Numbers', function(){
   equals(console._source_of(.283679), '0.283679');
   equals(console._source_of(Infinity), 'Infinity');
   equals(console._source_of(NaN), 'NaN');
+  equals(console._source_of(new Number(1)), '1');
 });
 
 test('Arrays', function(){
@@ -64,6 +65,7 @@ test('Functions', function(){
 
 test('Elements', function(){
   equals(console._source_of(document.body).toUpperCase(), '<BODY>');
+  equals(console._source_of(document.getElementById('qunit-header')), '<H1 id="qunit-header">');
   equals(console._source_of(document.createElement('IMG')), '<IMG/>');
 });
 
@@ -79,4 +81,7 @@ test('Misc', function(){
   equals(console._source_of(null), 'null');
   equals(console._source_of(true), 'true');
   equals(console._source_of(false), 'false');
+  var date = new Date;
+  equals(console._source_of(date), date.toString());
 });
+

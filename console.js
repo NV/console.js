@@ -50,9 +50,11 @@ if (typeof console === 'undefined') {
         // Is element?
         result = '<'+ arg.tagName;
         for (var i=0; i<arg.attributes.length; i++) {
-          result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
+          if (arg.attributes[i].specified) {
+            result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
+          }
         }
-        if (arg.childElementCount === 0) {
+        if (arg.childNodes && arg.childNodes.length === 0) {
           result += '/';
         }
         result += '>';
