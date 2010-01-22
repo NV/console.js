@@ -1,12 +1,12 @@
-if (typeof console === 'undefined') {
-  /**
-   * @see http://getfirebug.com/console.html
-   */
-  window.console = {};
-}
+(function(window){
 
-(function(){
-  
+  if (typeof console === 'undefined') {
+    /**
+     * @see http://getfirebug.com/console.html
+     */
+    window.console = {};
+  }
+
   console._output = console.log || window.opera && opera.postError || function dump (message) {
     console.history = console.history || [];
     return console.history.push(message);
@@ -194,4 +194,9 @@ if (typeof console === 'undefined') {
     console._timers[name].end = end;
   };
 
-})();
+  if (typeof require === 'function' && typeof exports !== 'undefined') {
+    exports.console = window.console;
+    console._output = require('system').print;
+  }
+
+})(this);

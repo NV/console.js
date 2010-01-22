@@ -1,0 +1,15 @@
+{
+	"name": "console",
+	"author": {
+		"name": "Nikita Vasilyev",
+		"url": "http://elv1s.ru/"
+	},
+	"url": "http://github.com/NV/console.js",
+	"license": {
+		"name": "MIT",
+		"url": "http://www.opensource.org/licenses/mit-license.php"
+	},
+	"description": "console.log() and friends. Based on Firebug console API.",
+	"keywords": [ "logging", "debugging", "profiling", "testing" ],
+	"lib": "console"
+}
