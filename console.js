@@ -43,7 +43,7 @@
       } else if (arg && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
-        for (var i=0; i<arg.attributes.length; i++) {
+        for (var i=0, ii=arg.attributes.length; i<ii; i++) {
           if (arg.attributes[i].specified) {
             result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
           }
@@ -56,8 +56,8 @@
         // Is array?
         result = '[';
         var arr_list = [];
-        for (var i=0; i<arg.length; i++) {
-          arr_list[i] = source_of_one_arg(arg[i], limit);
+        for (var j=0, jj=arg.length; j<jj; j++) {
+          arr_list[j] = source_of_one_arg(arg[j], limit);
         }
         result += arr_list.join(', ') +']';
       } else if (Object.prototype.toString.call(arg) === '[object String]') {
