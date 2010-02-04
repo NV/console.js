@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta encoding="utf-8">
+<title>Console.js</title>
+<style type="text/css">
+html {
+  background-color: #F8F8F8;
+  text-align: center;
+}
+</style>
+<script type="text/javascript" src="console.js"></script>
+<script type="text/javascript">
+console.log({roses: 'red', violets: 'blue', grass: 'green'});
+console.info(1, 1, 2, 3, 5, 8);
+console.warn('Oops!');
+console.error('OHH NO!');
+
+console.group('console.log');
+console.log(1,2,3);
+console.groupEnd();
+
+console.group('console.count');
+console.count('hey');
+console.groupEnd();
+
+console.group('console.trace');
+function t(){
+  console.trace();
+}
+t();
+console.groupEnd();
+
+console.group('console.dir');
+console.dir(["a","b"], 3);
+console.dir([1,[2,3]]);
+console.dir({a:1, b:2});
+console.groupEnd();
+</script>
+</head>
+<body>
+<h1><img src="intro.png" alt="Console.js" /></h1>
+</body>
+</html>
