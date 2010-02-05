@@ -1,4 +1,4 @@
-![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](/nv/console.js/raw/master/intro.png)
+![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](http://nv.github.com/console.js/intro.png)
 
 Different browsers, same API.
 
