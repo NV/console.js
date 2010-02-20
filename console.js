@@ -155,7 +155,7 @@
    * @param {String} title optional
    */
   console.count = console.count || function count (title) {
-    var title = title || '';
+    title = title || '';
     count.counters = count.counters || {};
     if (count.counters[title]) {
       count.counters[title]++;
