@@ -85,3 +85,16 @@ test('Misc', function(){
   equals(console._source_of(date), date.toString());
 });
 
+test('Recursive objects', function(){
+  var obj = {
+    a: 1
+  };
+  obj.__defineGetter__('b', function(){return this});
+  console.dimensions_limit = 1;
+  equals(console._source_of(obj), "{ 'a': 1, 'b': this }");
+  console.dimensions_limit = 2;
+  equals(console._source_of(obj), "{ 'a': 1, 'b': this }");
+  console.dimensions_limit = 3;
+  equals(console._source_of(obj), "{ 'a': 1, 'b': this }");
+});
+
