@@ -27,7 +27,6 @@ test('Numbers', function(){
   equals(console._source_of(.283679), '0.283679');
   equals(console._source_of(Infinity), 'Infinity');
   equals(console._source_of(NaN), 'NaN');
-  equals(console._source_of(new Number(1)), '1');
 });
 
 test('Arrays', function(){
@@ -39,6 +38,16 @@ test('Arrays', function(){
   equals(console._source_of([1, ['Yada-yada']]), "[1, ['Yada-yada']]");
   equals(console._source_of([1, [2, [3]]]), "[1, [2, [3]]]");
   equals(console._source_of([532, 94, [13, [41, 0]], [], 49]), "[532, 94, [13, [41, 0]], [], 49]");
+  equals(console._source_of(new Array(2,-3,4)), '[2, -3, 4]');
+});
+
+test('HTMLCollection', function(){
+  ok(console._source_of(document.body.children).indexOf('[') === 0, 'document.body.children looks like array');
+  ok(console._source_of(document.plugins).indexOf('[') === 0, 'document.plugins look like array');
+});
+
+test('NodeList', function(){
+  ok(console._source_of(document.body.childNodes).indexOf('[') === 0, 'Looks like array');
 });
 
 test('Objects', function(){
@@ -51,8 +60,11 @@ test('Objects', function(){
   console.dimensions_limit = 3;
   equals(console._source_of({down: {to: {rabbit: 'hole'}}}), "{ 'down': { 'to': { 'rabbit': 'hole' } } }");
   console.dimensions_limit = 1;
-  ok(console._source_of(document).indexOf('{') === 0, 'Looks like object');
-  ok(console._source_of(window).indexOf('{') === 0, 'Looks like object');
+  var n = new Number(1);
+  n.x = 2;
+  equals(console._source_of(n), "{ 'x': 2 }");
+  ok(console._source_of(document).indexOf('{') === 0, 'Looks like an object');
+  ok(console._source_of(window).indexOf('{') === 0, 'Looks like an object');
 });
 
 test('Functions', function(){

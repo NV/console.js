@@ -33,14 +33,13 @@
      * @return {String} string representation of input
      */
     function source_of_one_arg (arg, limit) {
-
-      var result = '';
-
       if (arg === null) {
         return 'null';
       } else if (typeof arg === 'undefined') {
         return 'undefined';
-      } else if (arg && arg.nodeType == 1) {
+      }
+      var result = '';
+      if (arg && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
         for (var i=0, ii=arg.attributes.length; i<ii; i++) {
@@ -51,19 +50,21 @@
         if (arg.childNodes && arg.childNodes.length === 0) {
           result += '/';
         }
-        result += '>';
-      } else if (Object.prototype.toString.call(arg) === '[object Array]') {
-        // Is array?
+        return result + '>';
+      }
+      var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
+      if (kind === 'String') {
+        return "'"+ arg +"'";
+      } else if (kind === 'Array' || kind === 'HTMLCollection' || kind === 'NodeList') {
+        // Is array-like object?
         result = '[';
         var arr_list = [];
         for (var j=0, jj=arg.length; j<jj; j++) {
           arr_list[j] = source_of_one_arg(arg[j], limit);
         }
-        result += arr_list.join(', ') +']';
-      } else if (Object.prototype.toString.call(arg) === '[object String]') {
-        result = "'"+ arg +"'";
-      } else if (arg instanceof RegExp) {
-        result = "/"+ arg.source +"/";
+        return result + arr_list.join(', ') +']';
+      } else if (kind === 'RegExp') {
+        return "/"+ arg.source +"/";
       } else if (typeof arg === 'object') {
         if (!limit) return '{?}';
         result = '{ ';
@@ -74,12 +75,10 @@
             arr_obj.push( "'"+ key +"': "+ value);
           } catch (e) {}
         }
-        result += arr_obj.join(', ') +' }';
+        return result + arr_obj.join(', ') +' }';
       } else {
         return arg;
       }
-
-      return result;
     }
 
     var result = [];
