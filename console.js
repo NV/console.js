@@ -54,7 +54,7 @@
       }
       var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
       if (kind === 'String') {
-        return "'"+ arg +"'";
+        return '"'+ arg +'"';
       } else if (kind === 'Array' || kind === 'HTMLCollection' || kind === 'NodeList') {
         // Is array-like object?
         result = '[';
@@ -69,15 +69,15 @@
         return arg;
       } else if (typeof arg === 'object') {
         if (!limit) return '{?}';
-        result = '{ ';
+        result = '{';
         var arr_obj = [];
         for (var key in arg) {
           try {
             var value = arg === arg[key] ? 'this' : source_of_one_arg(arg[key], limit-1);
-            arr_obj.push( "'"+ key +"': "+ value);
+            arr_obj.push( '"'+ key +'": '+ value);
           } catch (e) {}
         }
-        return result + arr_obj.join(', ') +' }';
+        return result + arr_obj.join(', ') +'}';
       } else {
         return arg;
       }
