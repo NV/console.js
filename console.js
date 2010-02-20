@@ -65,6 +65,8 @@
         return result + arr_list.join(', ') +']';
       } else if (kind === 'RegExp') {
         return "/"+ arg.source +"/";
+      } else if (kind === 'Date') {
+        return arg;
       } else if (typeof arg === 'object') {
         if (!limit) return '{?}';
         result = '{ ';
