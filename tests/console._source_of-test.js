@@ -98,15 +98,12 @@ test('Misc', function(){
 });
 
 test('Recursive objects', function(){
-  var obj = {
-    a: 1
-  };
-  obj.__defineGetter__('b', function(){return this});
-  console.dimensions_limit = 1;
-  equals(console._source_of(obj), '{"a": 1, "b": #}');
-  console.dimensions_limit = 2;
-  equals(console._source_of(obj), '{"a": 1, "b": #}');
+  var obj = {a: 1};
+  obj.root = obj;
+  equals(console._source_of(obj), '{"a": 1, "root": #}');
   console.dimensions_limit = 3;
-  equals(console._source_of(obj), '{"a": 1, "b": #}');
+  var obj2 = {a: {}};
+  obj2.a.root = obj2;
+  equals(console._source_of(obj2), '{"a": {"b":1, "root":#}}');
 });
 
