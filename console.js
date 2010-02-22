@@ -30,9 +30,10 @@
      * source_of_one_arg({x:2, y:8}) === "{'x':2, 'y':8}"
      * @param {Object} arg
      * @param {Number} limit dimension of objects
+     * @param {Array} stack of parent objects
      * @return {String} string representation of input
      */
-    function source_of_one_arg (arg, limit) {
+    function source_of_one_arg (arg, limit, stack) {
       if (arg === null) {
         return 'null';
       } else if (typeof arg === 'undefined') {
@@ -60,7 +61,7 @@
         result = '[';
         var arr_list = [];
         for (var j=0, jj=arg.length; j<jj; j++) {
-          arr_list[j] = source_of_one_arg(arg[j], limit);
+          arr_list[j] = source_of_one_arg(arg[j], limit, stack);
         }
         return result + arr_list.join(', ') +']';
       } else if (kind === 'RegExp') {
@@ -69,11 +70,18 @@
         return arg;
       } else if (typeof arg === 'object') {
         if (!limit) return '{?}';
+        // Check circular references
+        for (var si=0; si<stack.length; si++) {
+          if (stack[si] === arg) {
+            return '#';
+          }
+        }
+        stack.push(arg);
         result = '{';
         var arr_obj = [];
         for (var key in arg) {
           try {
-            var value = arg === arg[key] ? '#' : source_of_one_arg(arg[key], limit-1);
+            var value = source_of_one_arg(arg[key], limit-1, stack);
             arr_obj.push( '"'+ key +'": '+ value);
           } catch (e) {}
         }
@@ -85,7 +93,7 @@
 
     var result = [];
     for (var i=0; i<arguments.length; i++) {
-      result.push( source_of_one_arg(arguments[i], console.dimensions_limit) );
+      result.push( source_of_one_arg(arguments[i], console.dimensions_limit, []) );
     }
     return result.join(', ');
 

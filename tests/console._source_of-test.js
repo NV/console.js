@@ -54,12 +54,12 @@ test('Objects', function(){
   equals(console._source_of({name:'Nikita'}), '{"name": "Nikita"}');
   equals(console._source_of({name:'Nikita', surname:'Vasilyev'}), '{"name": "Nikita", "surname": "Vasilyev"}');
   equals(console._source_of({age: 21, name:'Nikita', surname:'Vasilyev'}), '{"age": 21, "name": "Nikita", "surname": "Vasilyev"}');
+  console.dimensions_limit = 1;
   equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{"down": {?}}');
   console.dimensions_limit = 2;
   equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{"down": {"to": {?}}}');
   console.dimensions_limit = 3;
   equals(console._source_of({down: {to: {rabbit: 'hole'}}}), '{"down": {"to": {"rabbit": "hole"}}}');
-  console.dimensions_limit = 1;
   var n = new Number(1);
   n.x = 2;
   equals(console._source_of(n), '{"x": 2}');
@@ -98,12 +98,12 @@ test('Misc', function(){
 });
 
 test('Recursive objects', function(){
+  console.dimensions_limit = 5;
   var obj = {a: 1};
   obj.root = obj;
   equals(console._source_of(obj), '{"a": 1, "root": #}');
-  console.dimensions_limit = 3;
-  var obj2 = {a: {}};
+  var obj2 = {a: {b: 1}};
   obj2.a.root = obj2;
-  equals(console._source_of(obj2), '{"a": {"b":1, "root":#}}');
+  equals(console._source_of(obj2), '{"a": {"b": 1, "root": #}}');
+  equals(console._source_of(obj2.a), '{"b": 1, "root": {"a": #}}');
 });
-
