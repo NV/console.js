@@ -73,7 +73,7 @@
         var arr_obj = [];
         for (var key in arg) {
           try {
-            var value = arg === arg[key] ? 'this' : source_of_one_arg(arg[key], limit-1);
+            var value = arg === arg[key] ? '#' : source_of_one_arg(arg[key], limit-1);
             arr_obj.push( '"'+ key +'": '+ value);
           } catch (e) {}
         }

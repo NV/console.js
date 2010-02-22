@@ -103,10 +103,10 @@ test('Recursive objects', function(){
   };
   obj.__defineGetter__('b', function(){return this});
   console.dimensions_limit = 1;
-  equals(console._source_of(obj), '{"a": 1, "b": this}');
+  equals(console._source_of(obj), '{"a": 1, "b": #}');
   console.dimensions_limit = 2;
-  equals(console._source_of(obj), '{"a": 1, "b": this}');
+  equals(console._source_of(obj), '{"a": 1, "b": #}');
   console.dimensions_limit = 3;
-  equals(console._source_of(obj), '{"a": 1, "b": this}');
+  equals(console._source_of(obj), '{"a": 1, "b": #}');
 });
 
