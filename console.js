@@ -19,7 +19,7 @@
    * console.dimensions_limit = 2
    * console.log({a:{b:1}}) ==> { 'a': { 'b': 1 } }
    */
-  console.dimensions_limit = 1;
+  console.dimensions_limit = 3;
 
   /**
    * source_of({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
