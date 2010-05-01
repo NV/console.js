@@ -24,7 +24,7 @@
   /**
    * source_of({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
    */
-  console._source_of = function source_of () {
+  console._source_of = function source_of (anything) {
 
     /**
      * source_of_one_arg({x:2, y:8}) === "{'x':2, 'y':8}"
@@ -91,11 +91,7 @@
       }
     }
 
-    var result = [];
-    for (var i=0; i<arguments.length; i++) {
-      result.push( source_of_one_arg(arguments[i], console.dimensions_limit, []) );
-    }
-    return result.join(', ');
+    return source_of_one_arg(anything, console.dimensions_limit, []).toString();
 
   };
 
@@ -104,11 +100,25 @@
 
   var log_methods = ['log', 'info', 'warn', 'error', 'debug', 'dir', 'dirxml'];
 
+  console._args_separator = '\n';
+  console._interpolate = /%[sdifo]/gi;
+
   for (var i=0; i<log_methods.length; i++) {
     var _log = console[log_methods[i]];
     if (browser_suck_at_logging || !console[log_methods[i]]) {
-      console[log_methods[i]] = function () {
-        return (_log || console._output)( console._source_of.apply(this, arguments) );
+      console[log_methods[i]] = function logger (first_arg) {
+        var args = Array.prototype.slice.call(arguments, 0);
+        var result = [];
+        if (typeof first_arg === 'string' && console._interpolate.test(first_arg)) {
+          args.shift();
+          result.push(first_arg.replace(console._interpolate, function(){
+            return console._source_of(args.shift());
+          }));
+        }
+        for (var i=0; i<args.length; i++) {
+          result.push(console._source_of(args[i]));
+        }
+        return (_log || console._output)(result.join(console._args_separator));
       };
     }
   }
