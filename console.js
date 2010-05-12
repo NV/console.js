@@ -5,7 +5,9 @@
      * @see http://getfirebug.com/console.html
      */
     window.console = {
-      _about: 'Console.js version 0.8'
+      toString: function (){
+        return 'Console.js version 0.8';
+      }
     };
   }
 
