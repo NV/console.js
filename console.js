@@ -4,7 +4,9 @@
     /**
      * @see http://getfirebug.com/console.html
      */
-    window.console = {};
+    window.console = {
+      _about: 'Console.js version 0.8'
+    };
   }
 
   console._output = console.log || window.opera && opera.postError || function dump (message) {

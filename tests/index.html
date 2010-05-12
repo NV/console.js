@@ -4,7 +4,16 @@
 <title>Console.js tests</title>
 <link rel="stylesheet" href="QUnit/qunit/qunit.css">
 <script type="text/javascript" src="QUnit/qunit/qunit.js"></script>
+<script type="text/javascript">
+// Test the Console.js, not Firebug's console or WebInspector's console.
+try {
+  console = undefined;  
+} catch (ouch) {
+  console.warn && console.warn("You aren't using Console.js. Most likely you are using Firebug's console instead.")
+}
+</script>
 <script type="text/javascript" src="../console.js"></script>
+<script type="text/javascript" src="console._about.js"></script>
 <script type="text/javascript" src="console._source_of-test.js"></script>
 <script type="text/javascript" src="console.log.js"></script>
 </head>
