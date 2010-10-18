@@ -44,6 +44,7 @@
         return 'undefined';
       }
       var result = '';
+
       if (arg && arg.nodeType == 1) {
         // Is element?
         result = '<'+ arg.tagName;
@@ -57,41 +58,51 @@
         }
         return result + '>';
       }
+
       var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
-      if (kind === 'String') {
-        return '"'+ arg +'"';
-      } else if (kind === 'Array' || kind === 'HTMLCollection' || kind === 'NodeList') {
-        // Is array-like object?
-        result = '[';
-        var arr_list = [];
-        for (var j=0, jj=arg.length; j<jj; j++) {
-          arr_list[j] = source_of_one_arg(arg[j], limit, stack);
-        }
-        return result + arr_list.join(', ') +']';
-      } else if (kind === 'RegExp') {
-        return "/"+ arg.source +"/";
-      } else if (kind === 'Date') {
-        return arg;
-      } else if (typeof arg === 'object') {
-        if (!limit) return '{?}';
-        // Check circular references
-        for (var si=0; si<stack.length; si++) {
-          if (stack[si] === arg) {
-            return '#';
+      switch (kind) {
+        case 'String':
+          return '"'+ arg +'"';
+
+        case 'Array':
+        case 'HTMLCollection':
+        case 'NodeList':
+          // Is array-like object?
+          result = '[';
+          var arr_list = [];
+          for (var j=0, jj=arg.length; j<jj; j++) {
+            arr_list[j] = source_of_one_arg(arg[j], limit, stack);
           }
-        }
-        stack.push(arg);
-        result = '{';
-        var arr_obj = [];
-        for (var key in arg) {
-          try {
-            var value = source_of_one_arg(arg[key], limit-1, stack);
-            arr_obj.push( '"'+ key +'": '+ value);
-          } catch (e) {}
-        }
-        return result + arr_obj.join(', ') +'}';
-      } else {
-        return arg;
+          return result + arr_list.join(', ') +']';
+
+        case 'RegExp':
+          return "/"+ arg.source +"/";
+
+        case 'Date':
+          return arg;
+
+        default:
+          if (typeof arg === 'object') {
+            if (!limit) return '{?}';
+            // Check circular references
+            for (var si=0; si<stack.length; si++) {
+              if (stack[si] === arg) {
+                return '#';
+              }
+            }
+            stack.push(arg);
+            result = '{';
+            var arr_obj = [];
+            for (var key in arg) {
+              try {
+                var value = source_of_one_arg(arg[key], limit-1, stack);
+                arr_obj.push( '"'+ key +'": '+ value);
+              } catch (e) {}
+            }
+            return result + arr_obj.join(', ') +'}';
+          } else {
+            return arg;
+          }
       }
     }
 
