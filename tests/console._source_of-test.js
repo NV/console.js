@@ -76,7 +76,7 @@ test('Functions', function(){
 });
 
 test('Elements', function(){
-  equals(console._source_of(document.body).toUpperCase(), '<BODY>');
+  equals(console._source_of(document.body).toUpperCase(), '<BODY ID="QUNIT-WRAPPER">');
   equals(console._source_of(document.getElementById('qunit-header')), '<H1 id="qunit-header">');
   equals(console._source_of(document.createElement('IMG')), '<IMG/>');
 });
