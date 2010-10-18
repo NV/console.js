@@ -51,18 +51,18 @@ test('NodeList', function(){
 });
 
 test('Objects', function(){
-  equals(console._source_of({name:'Nikita'}), '{"name": "Nikita"}');
-  equals(console._source_of({name:'Nikita', surname:'Vasilyev'}), '{"name": "Nikita", "surname": "Vasilyev"}');
-  equals(console._source_of({age: 21, name:'Nikita', surname:'Vasilyev'}), '{"age": 21, "name": "Nikita", "surname": "Vasilyev"}');
+  equals(console._source_of({name:'Nikita'}), '{\n  "name": "Nikita"\n}');
+  equals(console._source_of({name:'Nikita', surname:'Vasilyev'}), '{\n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
+  equals(console._source_of({age: 21, name:'Nikita', surname:'Vasilyev'}), '{\n  "age": 21, \n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
   console.dimensions_limit = 1;
-  equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{"down": {?}}');
+  equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{\n  "down": {?}\n}');
   console.dimensions_limit = 2;
-  equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{"down": {"to": {?}}}');
+  equals(console._source_of({down: {to: {rabbit: {hole:1}}}}), '{\n  "down": {\n    "to": {?}\n  }\n}');
   console.dimensions_limit = 3;
-  equals(console._source_of({down: {to: {rabbit: 'hole'}}}), '{"down": {"to": {"rabbit": "hole"}}}');
+  equals(console._source_of({down: {to: {rabbit: 'hole'}}}), '{\n  "down": {\n    "to": {\n      "rabbit": "hole"\n    }\n  }\n}');
   var n = new Number(1);
   n.x = 2;
-  equals(console._source_of(n), '{"x": 2}');
+  equals(console._source_of(n), '{\n  "x": 2\n}');
   ok(console._source_of(document).indexOf('{') === 0, 'Looks like an object');
   ok(console._source_of(window).indexOf('{') === 0, 'Looks like an object');
 });
@@ -101,9 +101,9 @@ test('Recursive objects', function(){
   console.dimensions_limit = 5;
   var obj = {a: 1};
   obj.root = obj;
-  equals(console._source_of(obj), '{"a": 1, "root": #}');
+  equals(console._source_of(obj), '{\n  "a": 1, \n  "root": #\n}');
   var obj2 = {a: {b: 1}};
   obj2.a.root = obj2;
-  equals(console._source_of(obj2), '{"a": {"b": 1, "root": #}}');
-  equals(console._source_of(obj2.a), '{"b": 1, "root": {"a": #}}');
+  equals(console._source_of(obj2), '{\n  "a": {\n    "b": 1, \n    "root": #\n  }\n}');
+  equals(console._source_of(obj2.a), '{\n  "b": 1, \n  "root": {\n    "a": #\n  }\n}');
 });

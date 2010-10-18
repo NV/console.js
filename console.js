@@ -26,6 +26,25 @@
   console.dimensions_limit = 3;
 
   /**
+   * repeatString("Ha ", 2) ==> "Ha Ha "
+   * @param {String} string
+   * @param {Number} times
+   */
+  function repeatString (string, times) {
+    if (times < 1) {
+      return '';
+    }
+    var result = string;
+    for (var i=times; --i;) {
+      result += string;
+    }
+    return result;
+  }
+
+  console._indent = '  ';
+
+
+  /**
    * source_of({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
    */
   console._source_of = function source_of (anything) {
@@ -85,21 +104,23 @@
           if (typeof arg === 'object') {
             if (!limit) return '{?}';
             // Check circular references
-            for (var si=0; si<stack.length; si++) {
+            var stack_length = stack.length;
+            for (var si=0; si<stack_length; si++) {
               if (stack[si] === arg) {
                 return '#';
               }
             }
-            stack.push(arg);
+            stack[stack_length++] = arg;
+            var indent = repeatString(console._indent, stack_length);
             result = '{';
             var arr_obj = [];
             for (var key in arg) {
               try {
                 var value = source_of_one_arg(arg[key], limit-1, stack);
-                arr_obj.push( '"'+ key +'": '+ value);
+                arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
               } catch (e) {}
             }
-            return result + arr_obj.join(', ') +'}';
+            return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
           } else {
             return arg;
           }
