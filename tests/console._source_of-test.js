@@ -63,7 +63,20 @@ test('Objects', function(){
   var n = new Number(1);
   n.x = 2;
   equals(console._source_of(n), '{\n  "x": 2\n}');
+});
+
+if (Object.defineProperty) {
+  test('Innumerable object', function(){
+    var inenum = Object.defineProperty({a: 1}, "b", {value: 37, enumerable: false});
+    equals(console._source_of(inenum), '{\n  "a": 1, \n  "b": 37\n}');
+  });
+}
+
+test('document', function(){
   ok(console._source_of(document).indexOf('{') === 0, 'Looks like an object');
+});
+
+test('window', function(){
   ok(console._source_of(window).indexOf('{') === 0, 'Looks like an object');
 });
 

@@ -112,9 +112,18 @@
             }
             stack[stack_length++] = arg;
             var indent = repeatString(console._indent, stack_length);
+            if (Object.getOwnPropertyNames) {
+              var keys = Object.getOwnPropertyNames(arg).sort();
+            } else {
+              keys = [];
+              for (var key in arg) {
+                keys.push(key);
+              }
+            }
             result = '{';
             var arr_obj = [];
-            for (var key in arg) {
+            for (var n=0, nn=keys.length; n<nn; n++) {
+              key = keys[n];
               try {
                 var value = source_of_one_arg(arg[key], limit-1, stack);
                 arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
