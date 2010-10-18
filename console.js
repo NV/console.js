@@ -115,6 +115,9 @@
               keys.push(key);
             }
           }
+          if (!keys.length) {
+            return "{}";
+          }
           result = '{';
           var arr_obj = [];
           for (var n=0, nn=keys.length; n<nn; n++) {

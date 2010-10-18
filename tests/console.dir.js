@@ -51,6 +51,7 @@ test('NodeList', function(){
 });
 
 test('Objects', function(){
+  equals(console.dir({}), '{}');
   equals(console.dir({name:'Nikita'}), '{\n  "name": "Nikita"\n}');
   equals(console.dir({name:'Nikita', surname:'Vasilyev'}), '{\n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
   equals(console.dir({age: 21, name:'Nikita', surname:'Vasilyev'}), '{\n  "age": 21, \n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
