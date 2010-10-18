@@ -15,7 +15,10 @@ How to use
 ----------
 
     >>> console.log({x:3, y:5})
-    { 'x': 3, 'y': 5 }
+    {
+      "x": 3, 
+      "y": 5
+    }
     >>> console.log(document.body)
     <BODY class="timeline" id="home">
 
