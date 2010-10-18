@@ -2,7 +2,7 @@
 
   if (typeof console === 'undefined') {
     /**
-     * @see http://getfirebug.com/console.html
+     * @see http://getfirebug.com/wiki/index.php/Console_API
      */
     window.console = {
       toString: function (){
@@ -45,105 +45,96 @@
 
 
   /**
-   * source_of({x:2, y:8, z:[4,3]}) ==> '{ x: 2, y: 8, z: [4, 3] }'
+   * source_of({x:2, y:8}) === "{'x':2, 'y':8}"
+   * @param {Object} arg
+   * @param {Number} limit dimension of objects
+   * @param {Array} stack of parent objects
+   * @return {String} string representation of input
    */
-  console._source_of = function source_of (anything) {
+  console._source_of = function source_of (arg, limit, stack) {
+    if (arg === null) {
+      return 'null';
+    } else if (typeof arg === 'undefined') {
+      return 'undefined';
+    }
+    var result = '';
 
-    /**
-     * source_of_one_arg({x:2, y:8}) === "{'x':2, 'y':8}"
-     * @param {Object} arg
-     * @param {Number} limit dimension of objects
-     * @param {Array} stack of parent objects
-     * @return {String} string representation of input
-     */
-    function source_of_one_arg (arg, limit, stack) {
-      if (arg === null) {
-        return 'null';
-      } else if (typeof arg === 'undefined') {
-        return 'undefined';
-      }
-      var result = '';
-
-      if (arg && arg.nodeType == 1) {
-        // Is element?
-        result = '<'+ arg.tagName;
-        for (var i=0, ii=arg.attributes.length; i<ii; i++) {
-          if (arg.attributes[i].specified) {
-            result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
-          }
+    if (arg && arg.nodeType == 1) {
+      // Is element?
+      result = '<'+ arg.tagName;
+      for (var i=0, ii=arg.attributes.length; i<ii; i++) {
+        if (arg.attributes[i].specified) {
+          result +=' '+ arg.attributes[i].name +'="'+ arg.attributes[i].value +'"';
         }
-        if (arg.childNodes && arg.childNodes.length === 0) {
-          result += '/';
-        }
-        return result + '>';
       }
-
-      var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
-      switch (kind) {
-        case 'String':
-          return '"'+ arg +'"';
-
-        case 'Array':
-        case 'HTMLCollection':
-        case 'NodeList':
-          // Is array-like object?
-          result = '[';
-          var arr_list = [];
-          for (var j=0, jj=arg.length; j<jj; j++) {
-            arr_list[j] = source_of_one_arg(arg[j], limit, stack);
-          }
-          return result + arr_list.join(', ') +']';
-
-        case 'RegExp':
-          return "/"+ arg.source +"/";
-
-        case 'Date':
-          return arg;
-
-        default:
-          if (typeof arg === 'object') {
-            if (!limit) return '{?}';
-            // Check circular references
-            var stack_length = stack.length;
-            for (var si=0; si<stack_length; si++) {
-              if (stack[si] === arg) {
-                return '#';
-              }
-            }
-            stack[stack_length++] = arg;
-            var indent = repeatString(console._indent, stack_length);
-            if (Object.getOwnPropertyNames) {
-              var keys = Object.getOwnPropertyNames(arg).sort();
-            } else {
-              keys = [];
-              for (var key in arg) {
-                keys.push(key);
-              }
-            }
-            result = '{';
-            var arr_obj = [];
-            for (var n=0, nn=keys.length; n<nn; n++) {
-              key = keys[n];
-              try {
-                var value = source_of_one_arg(arg[key], limit-1, stack);
-                arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
-              } catch (e) {}
-            }
-            return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
-          } else {
-            return arg;
-          }
+      if (arg.childNodes && arg.childNodes.length === 0) {
+        result += '/';
       }
+      return result + '>';
     }
 
-    return source_of_one_arg(anything, console.dimensions_limit, []).toString();
+    var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
+    switch (kind) {
+      case 'String':
+        return '"'+ arg +'"';
 
+      case 'Array':
+      case 'HTMLCollection':
+      case 'NodeList':
+        // Is array-like object?
+        result = '[';
+        var arr_list = [];
+        for (var j=0, jj=arg.length; j<jj; j++) {
+          arr_list[j] = source_of(arg[j], limit, stack);
+        }
+        return result + arr_list.join(', ') +']';
+
+      case 'RegExp':
+        return "/"+ arg.source +"/";
+
+      case 'Date':
+        return arg;
+
+      default:
+        if (typeof arg === 'object') {
+          if (!limit) return '{?}';
+          // Check circular references
+          var stack_length = stack.length;
+          for (var si=0; si<stack_length; si++) {
+            if (stack[si] === arg) {
+              return '#';
+            }
+          }
+          stack[stack_length++] = arg;
+          var indent = repeatString(console._indent, stack_length);
+          if (Object.getOwnPropertyNames) {
+            var keys = Object.getOwnPropertyNames(arg).sort();
+          } else {
+            keys = [];
+            for (var key in arg) {
+              keys.push(key);
+            }
+          }
+          result = '{';
+          var arr_obj = [];
+          for (var n=0, nn=keys.length; n<nn; n++) {
+            key = keys[n];
+            try {
+              var value = source_of(arg[key], limit-1, stack);
+              arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
+            } catch (e) {}
+          }
+          return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
+        } else {
+          return arg;
+        }
+    }
   };
 
   
   var browser_suck_at_logging = /*@cc_on 1 || @*/ window.opera;
 
-  var log_methods = ['log', 'info', 'warn', 'error', 'debug', 'dir', 'dirxml'];
+  var log_methods = ['log', 'info', 'warn', 'error', 'debug', 'dirxml'];
 
   console._args_separator = '\n';
   console._interpolate = /%[sdifo]/gi;
@@ -152,20 +143,34 @@
     var _log = console[log_methods[i]];
     if (browser_suck_at_logging || !console[log_methods[i]]) {
       console[log_methods[i]] = function logger (first_arg) {
-        var args = Array.prototype.slice.call(arguments, 0);
         var result = [];
+        var args = Array.prototype.slice.call(arguments, 0);
         if (typeof first_arg === 'string' && console._interpolate.test(first_arg)) {
           args.shift();
           result.push(first_arg.replace(console._interpolate, function(){
-            return console._source_of(args.shift());
+            return args.shift();
           }));
         }
         for (var i=0; i<args.length; i++) {
-          result.push(console._source_of(args[i]));
+          result.push(args[i]);
         }
         return (_log || console._output)(result.join(console._args_separator));
       };
     }
+  }
+
+
+  if (!console.dir || browser_suck_at_logging) {
+    /**
+     * @return {String} human-readable representation of input
+     */
+    console.dir = function dir (/* ...arguments */) {
+      var result = [];
+      for (var i=0; i<arguments.length; i++) {
+        result.push(console._source_of(arguments[i], console.dimensions_limit, []));
+      }
+      return console._output(result.join(console._args_separator));
+    };
   }
 
 
