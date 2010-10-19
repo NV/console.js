@@ -61,10 +61,10 @@ test('NodeList', function(){
 
 test('Objects', function(){
   equals(console.log({}), '{}');
-  equals(console.log({name:'Nikita'}), '{"name": "Nikita"}');
-  equals(console.log({name:'Nikita', surname:'Vasilyev'}), '{"name": "Nikita", "surname": "Vasilyev"}');
-  equals(console.log({age: 21, name:'Nikita', surname:'Vasilyev'}), '{"age": 21, "name": "Nikita", "surname": "Vasilyev"}');
-  equals(console.log({down: {to: {rabbit: {hole:1}}}}), '{"down": {?}}');
+  equals(console.log({name:'Nikita'}), '{name: "Nikita"}');
+  equals(console.log({name:'Nikita', surname:'Vasilyev'}), '{name: "Nikita", surname: "Vasilyev"}');
+  equals(console.log({age: 21, name:'Nikita', surname:'Vasilyev'}), '{age: 21, name: "Nikita", surname: "Vasilyev"}');
+  equals(console.log({down: {to: {rabbit: {hole:1}}}}), '{down: {?}}');
 });
 
 test('Constructor object', function(){
@@ -75,13 +75,13 @@ test('Constructor object', function(){
     this.legs = 4;
   }
   Dog.prototype = new Mammal;
-  equals(console.log(new Dog), '{"legs": 4}');
+  equals(console.log(new Dog), '{legs: 4}');
 });
 
 if (Object.defineProperty) {
   test('Innumerable object', function(){
     var inenum = Object.defineProperty({a: 1}, "b", {value: 37, enumerable: false});
-    equals(console.dir(inenum), '{\n  "a": 1, \n  "b": 37\n}');
+    equals(console.dir(inenum), '{\n  a: 1, \n  b: 37\n}');
   });
 }
 
@@ -118,6 +118,6 @@ test('String interpolation', function(){
   equals(console.log('foo %i buzz', 123), 'foo 123 buzz');
   equals(console.log('foo %f buzz', 9.8), 'foo 9.8 buzz');
   equals(console.log('foo %f buzz %syada', 9.8, 'yada-'), 'foo 9.8 buzz yada-yada');
-  equals(console.log('foo %o buzz', {a:'foo'}), 'foo {"a": "foo"} buzz');
+  equals(console.log('foo %o buzz', {a:'foo'}), 'foo {a: "foo"} buzz');
   equals(console.log('%s', 'a', 'b', 'c'), 'a\nb\nc');
 });

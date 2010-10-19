@@ -16,7 +16,7 @@ test('Strings', function(){
   equals(console.dir(" "), '" "');
   var strObj = new String('A');
   strObj.foo = "FUU!";
-  equals(console.dir(strObj), 'String "A" {\n  "0": "A", \n  "foo": "FUU!", \n  "length": 1\n}');
+  equals(console.dir(strObj), 'String "A" {\n  0: "A", \n  foo: "FUU!", \n  length: 1\n}');
 });
 
 test('Numbers', function(){
@@ -27,25 +27,25 @@ test('Numbers', function(){
   equals(console.dir(NaN), 'NaN');
   var numObj = new Number(42);
   numObj.twenty = 20;
-  equals(console.dir(numObj), 'Number 42 {\n  "twenty": 20\n}');
+  equals(console.dir(numObj), 'Number 42 {\n  twenty: 20\n}');
 });
 
 test('Arrays', function(){
-  equals(console.dir([]), 'Array {\n  "length": 0\n}');
-  equals(console.dir([1, 'Yada-yada']), 'Array {\n  "0": 1, \n  "1": "Yada-yada", \n  "length": 2\n}');
+  equals(console.dir([]), 'Array {\n  length: 0\n}');
+  equals(console.dir([1, 'Yada-yada']), 'Array {\n  0: 1, \n  1: "Yada-yada", \n  length: 2\n}');
 });
 
 test('Objects', function(){
   equals(console.dir({}), '{}');
-  equals(console.dir({name:'Nikita'}), '{\n  "name": "Nikita"\n}');
-  equals(console.dir({name:'Nikita', surname:'Vasilyev'}), '{\n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
-  equals(console.dir({age: 21, name:'Nikita', surname:'Vasilyev'}), '{\n  "age": 21, \n  "name": "Nikita", \n  "surname": "Vasilyev"\n}');
+  equals(console.dir({name:'Nikita'}), '{\n  name: "Nikita"\n}');
+  equals(console.dir({name:'Nikita', surname:'Vasilyev'}), '{\n  name: "Nikita", \n  surname: "Vasilyev"\n}');
+  equals(console.dir({age: 21, name:'Nikita', surname:'Vasilyev'}), '{\n  age: 21, \n  name: "Nikita", \n  surname: "Vasilyev"\n}');
   console.dimensions_limit = 1;
-  equals(console.dir({down: {to: {rabbit: {hole:1}}}}), '{\n  "down": {?}\n}');
+  equals(console.dir({down: {to: {rabbit: {hole:1}}}}), '{\n  down: {?}\n}');
   console.dimensions_limit = 2;
-  equals(console.dir({down: {to: {rabbit: {hole:1}}}}), '{\n  "down": {\n    "to": {?}\n  }\n}');
+  equals(console.dir({down: {to: {rabbit: {hole:1}}}}), '{\n  down: {\n    to: {?}\n  }\n}');
   console.dimensions_limit = 3;
-  equals(console.dir({down: {to: {rabbit: 'hole'}}}), '{\n  "down": {\n    "to": {\n      "rabbit": "hole"\n    }\n  }\n}');
+  equals(console.dir({down: {to: {rabbit: 'hole'}}}), '{\n  down: {\n    to: {\n      rabbit: "hole"\n    }\n  }\n}');
 });
 
 test('Constructor object', function(){
@@ -56,13 +56,13 @@ test('Constructor object', function(){
     this.legs = 4;
   }
   Dog.prototype = new Mammal;
-  equals(console.dir(new Dog), '{\n  "eats": "Milk", \n  "legs": 4\n}');
+  equals(console.dir(new Dog), '{\n  eats: "Milk", \n  legs: 4\n}');
 });
 
 if (Object.defineProperty) {
   test('Innumerable object', function(){
     var inenum = Object.defineProperty({a: 1}, "b", {value: 37, enumerable: false});
-    equals(console.dir(inenum), '{\n  "a": 1, \n  "b": 37\n}');
+    equals(console.dir(inenum), '{\n  a: 1, \n  b: 37\n}');
   });
 }
 
@@ -102,9 +102,9 @@ test('Recursive objects', function(){
   console.dimensions_limit = 5;
   var obj = {a: 1};
   obj.root = obj;
-  equals(console.dir(obj), '{\n  "a": 1, \n  "root": #\n}');
+  equals(console.dir(obj), '{\n  a: 1, \n  root: #\n}');
   var obj2 = {a: {b: 1}};
   obj2.a.root = obj2;
-  equals(console.dir(obj2), '{\n  "a": {\n    "b": 1, \n    "root": #\n  }\n}');
-  equals(console.dir(obj2.a), '{\n  "b": 1, \n  "root": {\n    "a": #\n  }\n}');
+  equals(console.dir(obj2), '{\n  a: {\n    b: 1, \n    root: #\n  }\n}');
+  equals(console.dir(obj2.a), '{\n  b: 1, \n  root: {\n    a: #\n  }\n}');
 });

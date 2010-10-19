@@ -6,7 +6,7 @@
      */
     window.console = {
       toString: function (){
-        return 'Console.js version 0.8';
+        return 'Console.js version 0.9';
       }
     };
   }
@@ -19,9 +19,9 @@
   /**
    * Limit of objects dimensions
    * console.dimensions_limit = 1
-   * console.dir({a:{b:1}}) ==> { 'a': {?} }
+   * console.dir({a:{b:1}}) ==> {a: {?}}
    * console.dimensions_limit = 2
-   * console.dir({a:{b:1}}) ==> { 'a': { 'b': 1 } }
+   * console.dir({a:{b:1}}) ==> {a: {b: 1}}
    */
   console.dimensions_limit = 3;
 
@@ -60,7 +60,7 @@
   }
 
   /**
-   * source_of({x:2, y:8}) === "{'x':2, 'y':8}"
+   * source_of({x:2, y:8}) === '{x: 2, y: 8}'
    * @param {*} arg
    * @param {Number} limit dimension of objects
    * @param {Array} stack of parent objects
@@ -124,7 +124,7 @@
       key = keys[n];
       try {
         var value = source_of(arg[key], limit-1, stack);
-        arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
+        arr_obj.push("\n"+ indent + key +': '+ value);
       } catch (e) {}
     }
     return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
@@ -233,7 +233,7 @@
             key = keys[n];
             try {
               var value = inspect(arg[key], true);
-              properties.push('"'+ key +'": '+ value);
+              properties.push(key +': '+ value);
             } catch (e) {}
           }
           return result + properties.join(', ') +'}';
