@@ -1,18 +1,12 @@
 ![Opera error console, IE6 alert, Firebug, Webkit Web Inspector](http://nv.github.com/console.js/intro.png)
 
-Different browsers, same API.
+*Different browsers, same API.*
 
-Firebug and Web Inspector both has console API support. But Opera and IE < 8 doesn't. Console.js fix it.
+Both Firebug and Web Inspector have console API support. Opera and IE 8–9 kind of have it. IE≤7 doesn't have it at all.
 
 
-Console.js — crossbrowser Firebug console API
+Console.js — crossbrowser [Firebug console API](http://getfirebug.com/wiki/index.php/Console_API)
 =============================================
-
-[Console.js benefits](http://wiki.github.com/NV/console.js/)
----------------------
-
-How to use
-----------
 
     >>> console.log({x:3, y:5})
     {x: 3, y: 5}
@@ -33,5 +27,5 @@ How to use
       }
     }
 
-[Comparison of consoles](http://wiki.github.com/NV/console.js/comparison-of-consoles)
-----------------------
+
+[Console.js benefits](http://wiki.github.com/NV/console.js/) ❦ [Comparison of consoles](http://wiki.github.com/NV/console.js/comparison-of-consoles)
