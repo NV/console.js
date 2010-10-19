@@ -1,24 +1,22 @@
 module('dir');
 
+console._output = function(arg){
+  return arg;
+};
+
+test('Boolean', function(){
+  equals(console.dir(true), 'true');
+  equals(console.dir(false), 'false');
+  equals(console.dir(new Boolean(false)), 'Boolean false {}');
+  equals(console.dir(new Boolean(true)), 'Boolean true {}');
+});
+
 test('Strings', function(){
   equals(console.dir('Hello!'), '"Hello!"');
-  equals(console.dir(new String('Hello!')), '"Hello!"');
-  equals(console.dir("Either the well was very deep, or she fell very slowly, for she had plenty of time as \n\
-  she went down to look about her and to wonder what was going to happen next. First, she tried to look down and \n\
-  make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, \n\
-  and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung \n\
-  upon pegs. She took down a jar from one of the shelves as she passed; it was labelled `ORANGE MARMALADE', but to \n\
-  her great disappointment it was empty: she did not like to drop the jar for fear of killing somebody, so managed \n\
-  to put it into one of the cupboards as she fell past it."),
-  '"Either the well was very deep, or she fell very slowly, for she had plenty of time as \n\
-  she went down to look about her and to wonder what was going to happen next. First, she tried to look down and \n\
-  make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, \n\
-  and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung \n\
-  upon pegs. She took down a jar from one of the shelves as she passed; it was labelled `ORANGE MARMALADE\', but to \n\
-  her great disappointment it was empty: she did not like to drop the jar for fear of killing somebody, so managed \n\
-  to put it into one of the cupboards as she fell past it."'
-  );
   equals(console.dir(" "), '" "');
+  var strObj = new String('A');
+  strObj.foo = "FUU!";
+  equals(console.dir(strObj), 'String "A" {\n  "0": "A", \n  "foo": "FUU!", \n  "length": 1\n}');
 });
 
 test('Numbers', function(){
@@ -27,27 +25,14 @@ test('Numbers', function(){
   equals(console.dir(.283679), '0.283679');
   equals(console.dir(Infinity), 'Infinity');
   equals(console.dir(NaN), 'NaN');
+  var numObj = new Number(42);
+  numObj.twenty = 20;
+  equals(console.dir(numObj), 'Number 42 {\n  "twenty": 20\n}');
 });
 
 test('Arrays', function(){
-  equals(console.dir([]), "[]");
-  equals(console.dir([1]), "[1]");
-  equals(console.dir(['Yada-yada']), '["Yada-yada"]');
-  equals(console.dir([1, 'Yada-yada']), '[1, "Yada-yada"]');
-  equals(console.dir([[1], 'Yada-yada']), '[[1], "Yada-yada"]');
-  equals(console.dir([1, ['Yada-yada']]), '[1, ["Yada-yada"]]');
-  equals(console.dir([1, [2, [3]]]), "[1, [2, [3]]]");
-  equals(console.dir([532, 94, [13, [41, 0]], [], 49]), "[532, 94, [13, [41, 0]], [], 49]");
-  equals(console.dir(new Array(2,-3,4)), '[2, -3, 4]');
-});
-
-test('HTMLCollection', function(){
-  ok(console.dir(document.body.children).indexOf('[') === 0, 'document.body.children looks like array');
-  ok(console.dir(document.plugins).indexOf('[') === 0, 'document.plugins look like array');
-});
-
-test('NodeList', function(){
-  ok(console.dir(document.body.childNodes).indexOf('[') === 0, 'Looks like array');
+  equals(console.dir([]), 'Array {\n  "length": 0\n}');
+  equals(console.dir([1, 'Yada-yada']), 'Array {\n  "0": 1, \n  "1": "Yada-yada", \n  "length": 2\n}');
 });
 
 test('Objects', function(){
@@ -61,9 +46,17 @@ test('Objects', function(){
   equals(console.dir({down: {to: {rabbit: {hole:1}}}}), '{\n  "down": {\n    "to": {?}\n  }\n}');
   console.dimensions_limit = 3;
   equals(console.dir({down: {to: {rabbit: 'hole'}}}), '{\n  "down": {\n    "to": {\n      "rabbit": "hole"\n    }\n  }\n}');
-  var n = new Number(1);
-  n.x = 2;
-  equals(console.dir(n), '{\n  "x": 2\n}');
+});
+
+test('Constructor object', function(){
+  function Mammal(){
+    this.eats = 'Milk';
+  }
+  function Dog(){
+    this.legs = 4;
+  }
+  Dog.prototype = new Mammal;
+  equals(console.dir(new Dog), '{\n  "eats": "Milk", \n  "legs": 4\n}');
 });
 
 if (Object.defineProperty) {
@@ -74,41 +67,35 @@ if (Object.defineProperty) {
 }
 
 test('document', function(){
-  ok(console.dir(document).indexOf('{') === 0, 'Looks like an object');
+  var doc = console.dir(document);
+  doc = doc.slice(0, doc.indexOf("\n"));
+  equals(doc, 'HTMLDocument {');
 });
 
 test('window', function(){
-  ok(console.dir(window).indexOf('{') === 0, 'Looks like an object');
+  var win = console.dir(window);
+  win = win.slice(0, win.indexOf("\n"));
+  ok(/^(Window|global) \{/.test(win), "Looks like window");
 });
 
 test('Functions', function(){
   function foo(/*bar*/) {
     //buz
   }
-  equals(console.dir(foo), foo.toString());
-  equals(console.dir(new Function('return 2*3')), new Function('return 2*3'));
-});
-
-test('Elements', function(){
-  equals(console.dir(document.body).toUpperCase(), '<BODY ID="QUNIT-WRAPPER">');
-  equals(console.dir(document.getElementById('qunit-header')), '<H1 id="qunit-header">');
-  equals(console.dir(document.createElement('IMG')), '<IMG/>');
+  var func = console.dir(foo);
+  var funcString = foo.toString();
+  equals(func.slice(0, func.indexOf("\n")), funcString.slice(0, funcString.indexOf("\n")));
 });
 
 test('RegExps', function(){
-  equals(console.dir(/.+/), '/.+/');
-  equals(console.dir(new RegExp('.+')), '/.+/');
-  var start_tag = /^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/;
-  equals(console.dir(start_tag), '/'+start_tag.source+'/');
+  var regexp = console.dir(/.+/);
+  regexp = regexp.slice(0, regexp.indexOf("\n"));
+  equals(regexp, "RegExp /.+/ {");
 });
 
-test('Misc', function(){
-  equals(console.dir(undefined), 'undefined');
-  equals(console.dir(null), 'null');
-  equals(console.dir(true), 'true');
-  equals(console.dir(false), 'false');
+test('Date', function(){
   var date = new Date;
-  equals(console.dir(date), date.toString());
+  equals(console.dir(date), "Date " + date.valueOf() + " {}");
 });
 
 test('Recursive objects', function(){

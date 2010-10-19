@@ -19,9 +19,9 @@
   /**
    * Limit of objects dimensions
    * console.dimensions_limit = 1
-   * console.log({a:{b:1}}) ==> { 'a': {?} }
+   * console.dir({a:{b:1}}) ==> { 'a': {?} }
    * console.dimensions_limit = 2
-   * console.log({a:{b:1}}) ==> { 'a': { 'b': 1 } }
+   * console.dir({a:{b:1}}) ==> { 'a': { 'b': 1 } }
    */
   console.dimensions_limit = 3;
 
@@ -43,21 +43,123 @@
 
   console._indent = '  ';
 
+  /**
+   * @param {Object} object
+   * @return {String}
+   */
+  function primitiveOf(object) {
+    var value = object.valueOf();
+    switch (typeof value) {
+      case "object":
+        return "";
+      case "string":
+        return '"' + value +'"';
+      default:
+        return String(value);
+    }
+  }
 
   /**
    * source_of({x:2, y:8}) === "{'x':2, 'y':8}"
-   * @param {Object} arg
+   * @param {*} arg
    * @param {Number} limit dimension of objects
    * @param {Array} stack of parent objects
    * @return {String} string representation of input
    */
   console._source_of = function source_of (arg, limit, stack) {
-    if (arg === null) {
-      return 'null';
-    } else if (typeof arg === 'undefined') {
-      return 'undefined';
+
+    var aType = typeof arg;
+    switch (aType) {
+      case 'string':
+        return '"' + arg +'"';
+      case 'function':
+        break;
+      case 'object':
+        if (arg === null) {
+          return 'null';
+        }
+        break;
+      default:
+        return String(arg);
     }
+
+    var prefix;
+    var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
+    if (kind == 'Object') {
+      prefix = '';
+    } else {
+      prefix = kind + ' ';
+      var primitive = primitiveOf(arg);
+      if (primitive) {
+        prefix += primitive + ' ';
+      }
+    }
+    if (!limit) {
+      return prefix + '{?}';
+    }
+    // Check circular references
+    var stack_length = stack.length;
+    for (var si=0; si<stack_length; si++) {
+      if (stack[si] === arg) {
+        return '#';
+      }
+    }
+    stack[stack_length++] = arg;
+    var indent = repeatString(console._indent, stack_length);
+    if (Object.getOwnPropertyNames) {
+      var keys = Object.getOwnPropertyNames(arg);
+    } else {
+      keys = [];
+      for (var key in arg) {
+        keys.push(key);
+      }
+    }
+    var result = prefix + '{';
+    if (!keys.length) {
+      return result + "}";
+    }
+    keys = keys.sort();
+    var arr_obj = [];
+    for (var n=0, nn=keys.length; n<nn; n++) {
+      key = keys[n];
+      try {
+        var value = source_of(arg[key], limit-1, stack);
+        arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
+      } catch (e) {}
+    }
+    return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
+
+  };
+
+
+  if (!console.dir || browser_suck_at_logging) {
+    /**
+     * @return {String} human-readable representation of input
+     */
+    console.dir = function dir (/* ...arguments */) {
+      var result = [];
+      for (var i=0; i<arguments.length; i++) {
+        result.push(console._source_of(arguments[i], console.dimensions_limit, []));
+      }
+      return console._output(result.join(console._args_separator));
+    };
+  }
+
+
+  /**
+   * @param {*} arg
+   * @param {Boolean} [within=false]
+   */
+  console._inspect = function inspect(arg, within) {
     var result = '';
+
+    // TODO: http://twitter.com/abozhilov/status/27768472491
+    if (Object(arg) !== arg) {
+      if (within && typeof arg == 'string') {
+        return '"' + arg + '"';
+      }
+      return arg;
+    }
 
     if (arg && arg.nodeType == 1) {
       // Is element?
@@ -76,65 +178,72 @@
     var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
     switch (kind) {
       case 'String':
-        return '"'+ arg +'"';
+        return 'String "' + arg +'"';
+
+      case 'Number':
+      case 'Boolean':
+        return kind + ' ' + arg;
 
       case 'Array':
       case 'HTMLCollection':
       case 'NodeList':
         // Is array-like object?
-        result = '[';
+        result = kind == 'Array' ? '[' : kind + ' [';
         var arr_list = [];
         for (var j=0, jj=arg.length; j<jj; j++) {
-          arr_list[j] = source_of(arg[j], limit, stack);
+          arr_list[j] = inspect(arg[j], true);
         }
         return result + arr_list.join(', ') +']';
+
+      case 'Function':
+      case 'Date':
+        return arg;
 
       case 'RegExp':
         return "/"+ arg.source +"/";
 
-      case 'Date':
-        return arg;
-
       default:
         if (typeof arg === 'object') {
-          if (!limit) return '{?}';
-          // Check circular references
-          var stack_length = stack.length;
-          for (var si=0; si<stack_length; si++) {
-            if (stack[si] === arg) {
-              return '#';
-            }
+          var prefix;
+          if (kind == 'Object') {
+            prefix = '';
+          } else {
+            prefix = kind + ' ';
           }
-          stack[stack_length++] = arg;
-          var indent = repeatString(console._indent, stack_length);
+          if (within) {
+            return prefix + '{?}';
+          }
           if (Object.getOwnPropertyNames) {
-            var keys = Object.getOwnPropertyNames(arg).sort();
+            var keys = Object.getOwnPropertyNames(arg);
           } else {
             keys = [];
             for (var key in arg) {
-              keys.push(key);
+              if (arg.hasOwnProperty(key)) {
+                keys.push(key);
+              }
             }
           }
+          result = prefix + '{';
           if (!keys.length) {
-            return "{}";
+            return result + "}";
           }
-          result = '{';
-          var arr_obj = [];
+          keys = keys.sort();
+          var properties = [];
           for (var n=0, nn=keys.length; n<nn; n++) {
             key = keys[n];
             try {
-              var value = source_of(arg[key], limit-1, stack);
-              arr_obj.push("\n"+ indent + '"'+ key +'": '+ value);
+              var value = inspect(arg[key], true);
+              properties.push('"'+ key +'": '+ value);
             } catch (e) {}
           }
-          return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
+          return result + properties.join(', ') +'}';
         } else {
           return arg;
         }
     }
   };
 
-  
+
   var browser_suck_at_logging = /*@cc_on 1 || @*/ window.opera;
 
   var log_methods = ['log', 'info', 'warn', 'error', 'debug', 'dirxml'];
@@ -151,31 +260,16 @@
         if (typeof first_arg === 'string' && console._interpolate.test(first_arg)) {
           args.shift();
           result.push(first_arg.replace(console._interpolate, function(){
-            return args.shift();
+            return console._inspect(args.shift());
           }));
         }
         for (var i=0; i<args.length; i++) {
-          result.push(args[i]);
+          result.push(console._inspect(args[i]));
         }
         return (_log || console._output)(result.join(console._args_separator));
       };
     }
   }
-
-
-  if (!console.dir || browser_suck_at_logging) {
-    /**
-     * @return {String} human-readable representation of input
-     */
-    console.dir = function dir (/* ...arguments */) {
-      var result = [];
-      for (var i=0; i<arguments.length; i++) {
-        result.push(console._source_of(arguments[i], console.dimensions_limit, []));
-      }
-      return console._output(result.join(console._args_separator));
-    };
-  }
-
 
   /**
    * Simplified version of http://eriwen.com/javascript/js-stack-trace/
