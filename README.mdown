@@ -15,12 +15,23 @@ How to use
 ----------
 
     >>> console.log({x:3, y:5})
+    {x: 3, y: 5}
+    >>> console.dir({x:3, y:5})
     {
-      "x": 3, 
-      "y": 5
+      x: 3, 
+      y: 5
     }
+
     >>> console.log(document.body)
     <BODY class="timeline" id="home">
+    >>> console.dir(document.body)
+    HTMLBodyElement {
+      aLink: "", 
+      attributes: NamedNodeMap {
+        0: Attr {?}
+        ...
+      }
+    }
 
 [Comparison of consoles](http://wiki.github.com/NV/console.js/comparison-of-consoles)
 ----------------------
