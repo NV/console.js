@@ -84,7 +84,7 @@
     }
 
     var prefix;
-    var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
+    var kind = Object.prototype.toString.call(arg).slice(8, -1);
     if (kind == 'Object') {
       prefix = '';
     } else {
