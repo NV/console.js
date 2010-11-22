@@ -175,7 +175,7 @@
       return result + '>';
     }
 
-    var kind = Object.prototype.toString.call(arg).replace('[object ', '').replace(']','');
+    var kind = Object.prototype.toString.call(arg).slice(8, -1);
     switch (kind) {
       case 'String':
         return 'String "' + arg +'"';
