@@ -266,7 +266,7 @@
         for (var i=0; i<args.length; i++) {
           result.push(console._inspect(args[i]));
         }
-        return (_log || console._output)(result.join(console._args_separator));
+        return (_log || console._output).call(console, result.join(console._args_separator));
       };
     }
   }
