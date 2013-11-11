@@ -252,7 +252,7 @@
   console._interpolate = /%[sdifo]/gi;
 
   for (var i=0; i<log_methods.length; i++) {
-    var _log = console[log_methods[i]];
+    var _log = console[log_methods[i]] || console._output;
     if (browser_suck_at_logging || !console[log_methods[i]]) {
       console[log_methods[i]] = function logger (first_arg) {
         var result = [];
@@ -266,7 +266,7 @@
         for (var i=0; i<args.length; i++) {
           result.push(console._inspect(args[i]));
         }
-        return (_log || console._output).call(console, result.join(console._args_separator));
+        return Function.prototype.call.call(_log, console, result.join(console._args_separator));
       };
     }
   }
